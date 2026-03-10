@@ -1,6 +1,7 @@
 import numpy as np
 from scipy.linalg import lu
 
+# INITIALIZATION
 n = 5
 eps = 1e-7
 
@@ -11,6 +12,7 @@ b_vec = np.random.randint(1, 11, size=n).astype(float)
 
 A_orig = A_mat.copy()
 
+# JUST FOR REFERENCE
 P, L_lu, U_lu = lu(A_mat)
 x_ref = np.linalg.solve(A_mat, b_vec)
 
@@ -22,6 +24,7 @@ print("\nReference solution = ", x_ref)
 
 d_vec = np.zeros(n)
 
+# COMPUTE LDLT DECOMPOSITION
 for p in range(n):
     s = 0.0
     for k in range(p):
@@ -42,10 +45,12 @@ print("d =", d_vec)
 print("A after decomposition (L below diag, original A on/above diag):")
 print(A_mat)
 
+# VERIFICATION
 det_A = np.prod(d_vec)
 print("\ndet(A) =", det_A)
 print("det(A) via numpy =", np.linalg.det(A_orig))
 
+# CHAIN LIKE COMPUTE FOR SOLUTION
 z_vec = b_vec.copy()
 for i in range(n):
     for j in range(i):
@@ -72,6 +77,7 @@ def mat_vec_original(A_mod, x, n):
             result[i] += a_ij * x[j]
     return result
 
+# FINAL VERIFICATION
 Ax = mat_vec_original(A_mat, x_sol, n)
 norm1 = np.linalg.norm(Ax - b_vec)
 norm2 = np.linalg.norm(x_sol - x_ref)
