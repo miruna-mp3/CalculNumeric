@@ -1,7 +1,5 @@
 import math
 
-# Evaluate polynomial at point v using Horner's scheme
-# Also returns the coefficients of the quotient polynomial
 def horner(a, v):
     n = len(a)
     b = [0.0] * n
@@ -10,7 +8,6 @@ def horner(a, v):
         b[i] = a[i] + b[i-1] * v
     return b
 
-# Calculate P(v), P'(v), P''(v) using Horner 3 times
 def eval_poly(a, v):
     b = horner(a, v)
     Pv = b[-1]
@@ -23,14 +20,12 @@ def eval_poly(a, v):
 
     return Pv, dPv, ddPv
 
-# Find R such that all real roots are in [-R, R]
 def find_interval(a):
     a0 = abs(a[0])
     A = max(abs(x) for x in a[1:])
     R = (a0 + A) / a0
     return R
 
-# Newton's method
 def newton(a, x0, eps, kmax=1000):
     x = x0
     steps = 0
@@ -51,7 +46,6 @@ def newton(a, x0, eps, kmax=1000):
 
     return None, steps
 
-# Olver's method
 def olver(a, x0, eps, kmax=1000):
     x = x0
     steps = 0
@@ -73,7 +67,6 @@ def olver(a, x0, eps, kmax=1000):
 
     return None, steps
 
-# Check if a root is already in our list
 def is_new_root(roots, r, eps):
     for existing in roots:
         if abs(existing - r) <= eps:
@@ -112,7 +105,7 @@ def main():
         root, steps = newton(a, x0, eps)
         if root is not None and -R <= root <= R:
             Pv, _, _ = eval_poly(a, root)
-            if abs(Pv) < 1e-6:  # sanity check it's actually a root
+            if abs(Pv) < 1e-6:  # sanity check its actually a root
                 if is_new_root(roots_newton, root, eps):
                     roots_newton.append(root)
                     total_steps_newton += steps
